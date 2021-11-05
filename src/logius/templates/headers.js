@@ -208,7 +208,7 @@ export default (conf, options) => {
             <dd><a href="${conf.prevRecURI}">${conf.prevRecURI}</a></dd>
           `}
       <dt>${conf.multipleEditors ? l10n.editors : l10n.editor}</dt>
-      ${showPeople(conf.editors)}
+      ${showPeople(conf, "editors")}
       ${Array.isArray(conf.formerEditors) && conf.formerEditors.length > 0
         ? html`
             <dt>
@@ -216,7 +216,7 @@ export default (conf, options) => {
                 ? l10n.former_editors
                 : l10n.former_editor}
             </dt>
-            ${showPeople(conf.formerEditors)}
+            ${showPeople(conf, "editors")}
           `
         : ""}
       ${conf.authors
