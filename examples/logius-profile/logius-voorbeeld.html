@@ -10,6 +10,7 @@
   <script src="document-config.js" class="remove"></script>
   <script class="remove"> const respecConfig = {...organisationConfig, ...documentConfig}</script>
   <script src="../../profiles/logius.js" class="remove" type="module" async></script>
+  <script src="../../node_modules/mermaid/dist/mermaid.js" class="remove"></script>
   <link rel="shortcut icon" type="image/x-icon"
     href="https://publicatie.centrumvoorstandaarden.nl/respec/style/logos/logius.ico" />
 
@@ -24,6 +25,7 @@
 </head>
 
 <body>
+<script>mermaid.initialize({startOnLoad:true});</script>
   <section id='abstract'></section>
   <!-- <section id='sotd' style="display: none"> -->
   <section id='sotd'></section>
@@ -46,6 +48,15 @@
   </section>
   <section data-format="markdown" data-include="dk_doel_document.md" data-oninclude="include"></section>
 
+  <section id="mermaid">
+    <h2>Mermaid</h2>
+    <div class="mermaid">
+      graph LR
+      A --- B
+      B-->C[fa:fa-ban forbidden]
+      B-->D(fa:fa-spinner);
+    </div>
+  </section>
   <!-- <section id="tof" class="informative appendix"></section> -->
   <section id='conformance'>
     <!-- This section is filled automatically by ReSpec. -->
