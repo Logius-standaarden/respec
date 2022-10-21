@@ -233,6 +233,15 @@ export function makeBasicConfig(profile = "w3c") {
         ],
         specStatus: "PD",
       };
+    case "logius":
+      return {
+        nl_organisationName: "Logius",
+        editors: [
+          {
+            name: "Person Name",
+          },
+        ],
+      };
     default:
       throw new Error(`Unknown profile: ${profile}`);
   }

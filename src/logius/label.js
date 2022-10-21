@@ -13,12 +13,11 @@ async function createLabel(conf) {
   }
   const l10n_labelText = getIntlData(conf.labelText);
   const sideLabel = document.createElement("div");
-
   const labelColor = conf.labelColorTable[conf.specStatus.toLowerCase()];
+
   sideLabel.innerHTML = `${conf.nl_organisationName} - ${
     l10n_labelText[conf.specStatus.toLowerCase()]
   }`;
-
   sideLabel.setAttribute("class", "sidelabel");
   sideLabel.setAttribute("style", `background-color: ${labelColor};`);
   document.body.appendChild(sideLabel);

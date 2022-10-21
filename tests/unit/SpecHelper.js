@@ -22,7 +22,7 @@ export function makePluginDoc(
   ];
   return getDoc(`
     <!DOCTYPE html>
-    <html lang="en">
+    <html lang="nl">
       <head>
         ${head}
         <script>
