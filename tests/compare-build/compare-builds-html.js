@@ -29,7 +29,7 @@ console.log("test ended");
 //download current logius profile from url and save it as a .js file
 function downloadStableLogiusBuild(callback) {
   const profile = fs.createWriteStream(stableLogiusProfileUrl);
-  const request = https.get(profileURL, function(response) {
+  https.get(profileURL, function(response) {
     response.pipe(profile);
 
     // after download completed close filestream
