@@ -15,3 +15,7 @@ js/deps/builds
 pnpm-lock.yaml
 *.log
 test/testIndex.html
+/tests/compare-build/currentSnapshot.html
+/tests/compare-build/html-test-log
+/tests/compare-build/stableLogiusProfile.js
+/tests/compare-build/stableSnapshot.html
