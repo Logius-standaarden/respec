@@ -62,3 +62,15 @@ jobs:
       - run: npm test
         env:
           BROWSERS: ChromeHeadless
+
+  compare-builds:
+    name: Compare current ReSpec build with stable
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with: { node-version: 16, cache: npm }
+      - name: install
+        run: npm ci
+      - name: run test
+        run: npm run compare:builds
