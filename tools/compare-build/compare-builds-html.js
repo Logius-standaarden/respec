@@ -23,6 +23,8 @@ console.log("Test started");
 downloadStableLogiusBuild(createStableSnapshot);
 createCurrentBuild(createCurrentSnapshot);
 compareSnapshots();
+fs.unlink(currentSnapshotPath, err => {if (err){console.log(err)}});
+fs.unlink(stableSnapshotPath, err => {if (err){console.log(err)}});
 console.log("Test ended");
 
 
@@ -38,7 +40,6 @@ function downloadStableLogiusBuild(callback) {
       callback();
     });
   });
-  console.log("Download LogiusProfile Completed");
 }
 
 // create snapshot with the build downloaded from stableLogiusProfileUrl
