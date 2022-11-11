@@ -133,8 +133,8 @@ export default (conf, options) => {
     <h2>
       ${conf.nl_organisationName
         ? `${conf.nl_organisationName} `
-        : ""}${conf.isRegular ? html` ${conf.typeStatus}<br /> ` : ""}
-      ${conf.textStatus}
+        : ""}${html` ${conf.typeText}<br/> `}
+      ${conf.statusText}
       <time class="dt-published" datetime="${conf.dashDate}"
         >${conf.publishHumanDate}</time
       >${conf.modificationDate

@@ -113,7 +113,6 @@ export const name = "logius/headers";
 
 const localizationStrings = {
   en: {
-    sotd: "Status of This Document",
     wv: "Draft",
     cv: "Recommendation",
     vv: "Proposed recommendation",
@@ -132,7 +131,6 @@ const localizationStrings = {
     bp: "Best practice",
   },
   nl: {
-    sotd: "Status van dit document",
     wv: "Werkversie",
     cv: "Consultatieversie",
     vv: "Versie ter vaststelling",
@@ -160,39 +158,6 @@ const NLRespecDate = new Intl.DateTimeFormat(["nl"], {
   month: "long",
   day: "2-digit",
 });
-
-// Thijs Brentjens: added Geonovum statusses
-// https://github.com/Logius-standaarden/respec/wiki/specStatus
-// pieter hering inserted generic names and added two statuses
-const status2text = {
-  WV: l10n.wv,
-  CV: l10n.cv,
-  VV: l10n.vv,
-  DEF: l10n.def,
-  BASIS: l10n.basis,
-  EO: l10n.eo,
-  TG: l10n.tg,
-  "GN-WV": "Werkversie",
-  "GN-CV": "Consultatieversie",
-  "GN-VV": "Versie ter vaststelling",
-  "GN-DEF": "Vastgestelde versie",
-  "GN-BASIS": "Document",
-};
-
-// Thijs Brentjens: added Geonovum types
-// https://github.com/Logius-standaarden/respec/wiki/specType
-// pieter hering inserted generic names and added two statuses
-const type2text = {
-  NO: l10n.no,
-  ST: l10n.st,
-  IM: l10n.im,
-  PR: l10n.pr,
-  HR: l10n.hr,
-  WA: l10n.wa,
-  AL: l10n.al,
-  BD: l10n.bd,
-  BP: l10n.bp,
-};
 
 const noTrackStatus = []; // empty? or only "GN-BASIS"?
 
@@ -400,10 +365,8 @@ export function run(conf) {
   }
   if (conf.copyrightStart && conf.copyrightStart == conf.publishYear)
     conf.copyrightStart = "";
-
-  conf.textStatus = status2text[conf.specStatus];
-  // Thijs: added typeStatus
-  conf.typeStatus = type2text[conf.specType];
+  conf.statusText = l10n[conf.specStatus.toLowerCase()];
+  conf.typeText = l10n[conf.specType.toLowerCase()];
 
   conf.showThisVersion = !conf.isNoTrack; // || conf.isTagFinding;
   // Thijs Brentjens: adapted for Geonovum document tyoes

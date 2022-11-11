@@ -1,9 +1,7 @@
 /* eslint-disable no-unused-vars */
 const organisationConfig = {
-  nl_organisationName: "Rick de Bruijn",
-  nl_organisationPrefix: "LS-",
-  nl_organisationStylesURL:
-    "https://publicatie.centrumvoorstandaarden.nl/respec/style/",
+  nl_organisationName: "Logius",
+  nl_organisationStylesURL: "https://publicatie.centrumvoorstandaarden.nl/respec/style/",
   // nl_organisationStylesURL: "http://localhost:8081/respec/style/",
   nl_organisationPublishURL: "https://publicatie.centrumvoorstandaarden.nl/",
   nl_logo: {
@@ -16,6 +14,52 @@ const organisationConfig = {
     url: "https://www.logius.nl/standaarden",
   },
   // preProcess: [mdAddFigure],
+
+  specTypeText: {
+    en: {
+      no: "Norm",
+      st: "Standard",
+      im: "Information model",
+      pr: "Guideline",
+      hr: "Guide",
+      wa: "Proposed recommendation",
+      al: "General",
+      bd: "Governance documentation",
+      bp: "Best practice",
+    },
+    nl: {
+      no: "Norm",
+      st: "Standaard",
+      im: "Informatiemodel",
+      pr: "Praktijkrichtlijn",
+      hr: "Handreiking",
+      wa: "Werkafspraak",
+      al: "Algemeen",
+      bd: "Beheerdocumentatie",
+      bp: "Best practice",
+    },
+  },
+
+  specStatusText: {
+    en: {
+      wv: "Draft",
+      cv: "Recommendation",
+      vv: "Proposed recommendation",
+      def: "Definitive version",
+      basis: "Document",
+      eo: "Outdated version",
+      tg: "Rescinded version",
+    },
+    nl: {
+      wv: "Werkversie",
+      cv: "Consultatieversie",
+      vv: "Versie ter vaststelling",
+      def: "Vastgestelde versie",
+      basis: "Document",
+      eo: "Verouderde versie",
+      tg: "Teruggetrokken versie",
+    },
+  },
 
   governanceTypeText: {
     nl: {
@@ -49,36 +93,17 @@ const organisationConfig = {
       basis: "This document has no official standing.",
     },
   },
-  labelText: {
-    nl: {
-      def: `Definitieve versie`,
-      wv: `Werkversie`,
-      cv: `Goedgekeurde consultatieversie`,
-      vv: `Definitief concept`,
-      basis: "Geen officiële status",
-    },
-    en: {
-      def: `Definitive version`,
-      wv: `Working version`,
-      cv: `Approved consultation version`,
-      vv: `Final draft`,
-      basis: `No official status`,
-    },
-  },
-  labelColorTable: {
+
+  labelColor: {
     def: "#154273",
     wv: "#32a852",
-    cv: "#2fdaed",
-    vv: "#f00a0a",
-    basis: "#8c8c8c",
   },
   licenses: {
     cc0: {
       name: "Creative Commons 0 Public Domain Dedication",
       short: "CC0",
       url: "https://creativecommons.org/publicdomain/zero/1.0/",
-      image:
-        "https://tools.geostandaarden.nl/respec/style/logos/CC-Licentie.svg",
+      image: "https://tools.geostandaarden.nl/respec/style/logos/CC-Licentie.svg",
     },
     "cc-by": {
       name: "Creative Commons Attribution 4.0 International Public License",
@@ -92,6 +117,6 @@ const organisationConfig = {
       url: "https://creativecommons.org/licenses/by-nd/4.0/legalcode.nl",
       image: "https://tools.geostandaarden.nl/respec/style/logos/cc-by-nd.svg",
     },
-  },  
+  },
 };
 /* eslint-enable no-unused-vars */
