@@ -126,14 +126,13 @@ const localizationStrings = {
 export const l10n = getIntlData(localizationStrings);
 
 export default (conf, options) => {
-
   return html`<div class="head">
     ${conf.logos.map(showLogo)} ${document.querySelector("h1#title")}
     ${getSpecSubTitleElem(conf)}
     <h2>
-      ${conf.nl_organisationName
-        ? `${conf.nl_organisationName} `
-        : ""}${html` ${conf.typeText}<br/> `}
+      ${conf.nl_organisationName ? `${conf.nl_organisationName} ` : ""}${html`
+        ${conf.typeText}<br />
+      `}
       ${conf.statusText}
       <time class="dt-published" datetime="${conf.dashDate}"
         >${conf.publishHumanDate}</time

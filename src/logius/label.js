@@ -1,5 +1,4 @@
 import css from "../styles/label.css.js";
-import { getIntlData } from "../core/utils.js";
 
 export const name = "logius/label";
 

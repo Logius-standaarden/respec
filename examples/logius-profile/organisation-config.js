@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-vars */
 const organisationConfig = {
   nl_organisationName: "Logius",
-  nl_organisationStylesURL: "https://publicatie.centrumvoorstandaarden.nl/respec/style/",
+  nl_organisationStylesURL:
+    "https://publicatie.centrumvoorstandaarden.nl/respec/style/",
   // nl_organisationStylesURL: "http://localhost:8081/respec/style/",
   nl_organisationPublishURL: "https://publicatie.centrumvoorstandaarden.nl/",
   nl_logo: {
@@ -103,7 +104,8 @@ const organisationConfig = {
       name: "Creative Commons 0 Public Domain Dedication",
       short: "CC0",
       url: "https://creativecommons.org/publicdomain/zero/1.0/",
-      image: "https://tools.geostandaarden.nl/respec/style/logos/CC-Licentie.svg",
+      image:
+        "https://tools.geostandaarden.nl/respec/style/logos/CC-Licentie.svg",
     },
     "cc-by": {
       name: "Creative Commons Attribution 4.0 International Public License",
