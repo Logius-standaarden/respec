@@ -237,10 +237,6 @@ export function run(conf) {
   conf.isCCBYND = conf.license === "cc-by-nd";
 
   conf.licenseInfo = conf.licenses[conf.license.toLowerCase()];
-  conf.isBasic = conf.specStatus === "base";
-  // Thijs Brentjens: TODO: for a GN-BASIS document, is it necesary to deal differently with URIs? Especially for "Laatst gepubliceerde versie"
-  // Deal with all current GN specStatusses the same. This is mostly seen in the links in the header for Last editor's draft etc
-  conf.isOfficial = conf.specStatus === "GN-DEF" || conf.specStatus === "DEF";
 
   if (!conf.specStatus) {
     const msg = "Missing required configuration: `specStatus`";
@@ -270,7 +266,6 @@ export function run(conf) {
   }
   // end insertion from w3c
 
-  conf.title = document.title || "No Title";
   if (!conf.subtitle) conf.subtitle = "";
   conf.publishDate = validateDateAndRecover(
     conf,
