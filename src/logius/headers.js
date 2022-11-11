@@ -194,11 +194,6 @@ const type2text = {
   BP: l10n.bp,
 };
 
-const status2long = {
-  // "FPWD-NOTE": "First Public Working Group Note",
-  // "LC-NOTE": "Last Call Working Draft",
-};
-
 const noTrackStatus = []; // empty? or only "GN-BASIS"?
 
 /**
@@ -429,11 +424,7 @@ export function run(conf) {
   }
   if (conf.copyrightStart && conf.copyrightStart == conf.publishYear)
     conf.copyrightStart = "";
-  for (const k in status2text) {
-    if (status2long[k]) continue;
-    status2long[k] = status2text[k];
-  }
-  conf.longStatus = status2long[conf.specStatus];
+
   conf.textStatus = status2text[conf.specStatus];
   // Thijs: added typeStatus
   conf.typeStatus = type2text[conf.specType];
@@ -622,13 +613,6 @@ export function run(conf) {
       "CR, PR, and REC documents need to have an `implementationReportURI` defined."
     );
   }
-
-  // Requested by https://github.com/w3c/respec/issues/504
-  // Makes a record of a few auto-generated things.
-  pub("amend-user-config", {
-    publishISODate: conf.publishISODate,
-    generatedSubtitle: `${conf.longStatus} ${conf.publishHumanDate}`,
-  });
 }
 
 // todo: pieter commented out
