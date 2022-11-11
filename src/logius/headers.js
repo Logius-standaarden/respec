@@ -240,15 +240,13 @@ export function run(conf) {
   conf.isBasic = conf.specStatus === "base";
   // Thijs Brentjens: TODO: for a GN-BASIS document, is it necesary to deal differently with URIs? Especially for "Laatst gepubliceerde versie"
   // Deal with all current GN specStatusses the same. This is mostly seen in the links in the header for Last editor's draft etc
-  // conf.isRegular = conf.specStatus !== "GN-BASIS";
-  conf.isRegular = true;
   conf.isOfficial = conf.specStatus === "GN-DEF" || conf.specStatus === "DEF";
 
   if (!conf.specStatus) {
     const msg = "Missing required configuration: `specStatus`";
     showError(msg, name);
   }
-  if (conf.isRegular && !conf.shortName) {
+  if (!conf.shortName) {
     const msg = "Missing required configuration: `shortName`";
     showError(msg, name);
   }
@@ -287,23 +285,6 @@ export function run(conf) {
   );
   conf.isNoTrack = noTrackStatus.includes(conf.specStatus);
 
-  // todo fixed, static url
-  if (!conf.edDraftURI) {
-    conf.edDraftURI = "";
-    // Thijs Brentjens: deal with editors draft links based on Github URIs
-    if (conf.github) {
-      // parse the org and repo name to construct a github.io URI if a github URI is provided
-      // https://github.com/Logius-standaarden/respec/issues/141
-      // https://github.com/{org}/{repo} should be rewritten to https://{org}.github.io/{repo}/
-      const githubParts = conf.github.split("github.com/")[1].split("/");
-      conf.edDraftURI = `https://${githubParts[0]}.github.io/${githubParts[1]}`;
-    }
-    // todo no clear 'ED' status in this version
-    if (conf.specStatus === "ED") {
-      const msg = "Editor's Drafts should set edDraftURI.";
-      showWarning(msg, name);
-    }
-  }
   // Version URLs
   // Thijs Brentjens: changed this to Geonovum specific format. See https://github.com/Geonovum/respec/issues/126
   if (!conf.nl_organisationPublishURL) {
@@ -320,7 +301,7 @@ export function run(conf) {
     ? conf.specStatus.substr(3).toLowerCase()
     : conf.specStatus.toLowerCase();
   // eslint-disable-next-line prettier/prettier
-  if (conf.isRegular && conf.specStatus !== "GN-WV" && conf.specStatus !== "WV" && conf.specStatus == "DEF") // pieter added: only link to publication server when specStatus == "DEF
+  if (conf.specStatus !== "GN-WV" && conf.specStatus !== "WV" && conf.specStatus == "DEF") // pieter added: only link to publication server when specStatus == "DEF
   {
     if (!conf.publishVersion) {
       // eslint-disable-next-line prettier/prettier
@@ -335,7 +316,7 @@ export function run(conf) {
 
   // Only show latestVersion if a publishDate has been set. see issue https://github.com/Geonovum/respec/issues/93
   // todo check path generation
-  if (conf.isRegular && conf.hasBeenPublished)
+  if (conf.hasBeenPublished)
     // Thijs Brentjens: see
     conf.latestVersion = `${conf.nl_organisationPublishURL}${conf.pubDomain}/${conf.shortName}/`;
 
