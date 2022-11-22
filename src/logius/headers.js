@@ -244,7 +244,7 @@ export function run(conf) {
     conf.specStatus != "WV" ? conf.publishDate : new Date(document.lastModified)
   );
   conf.isNoTrack = noTrackStatus.includes(conf.specStatus);
-  
+
   if (!conf.edDraftURI) {
     conf.edDraftURI = "";
     // Thijs Brentjens: deal with editors draft links based on Github URIs

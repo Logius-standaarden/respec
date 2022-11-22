@@ -15,9 +15,8 @@ const recommendedConfigs = [
 const wikiURL = "https://github.com/Logius-standaarden/respec/wiki/";
 
 export async function run(conf) {
-  if (conf.useSideBar) {
-    requiredConfigs.push("labelText");
-    requiredConfigs.push("labelColorTable");
+  if (conf.useLabel) {
+    requiredConfigs.push("labelColor");
   }
 
   await errorMissingConfigs(conf);
