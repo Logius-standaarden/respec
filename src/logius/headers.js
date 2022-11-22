@@ -244,6 +244,23 @@ export function run(conf) {
     conf.specStatus != "WV" ? conf.publishDate : new Date(document.lastModified)
   );
   conf.isNoTrack = noTrackStatus.includes(conf.specStatus);
+  
+  if (!conf.edDraftURI) {
+    conf.edDraftURI = "";
+    // Thijs Brentjens: deal with editors draft links based on Github URIs
+    if (conf.github) {
+      // parse the org and repo name to construct a github.io URI if a github URI is provided
+      // https://github.com/Logius-standaarden/respec/issues/141
+      // https://github.com/{org}/{repo} should be rewritten to https://{org}.github.io/{repo}/
+      const githubParts = conf.github.split("github.com/")[1].split("/");
+      conf.edDraftURI = `https://${githubParts[0]}.github.io/${githubParts[1]}`;
+    }
+    // todo no clear 'ED' status in this version
+    if (conf.specStatus === "ED") {
+      const msg = "Editor's Drafts should set edDraftURI.";
+      showWarning(msg, name);
+    }
+  }
 
   // Version URLs
   // Thijs Brentjens: changed this to Geonovum specific format. See https://github.com/Geonovum/respec/issues/126
