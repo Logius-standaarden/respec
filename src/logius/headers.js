@@ -111,8 +111,6 @@ import sotdTmpl from "./templates/sotd.js";
 
 export const name = "logius/headers";
 
-export const l10n = getIntlData(conf.localizationStrings);
-
 const NLRespecDate = new Intl.DateTimeFormat(["nl"], {
   timeZone: "UTC",
   year: "numeric",
@@ -140,8 +138,7 @@ function validateDateAndRecover(conf, prop, fallbackDate = new Date()) {
 }
 
 export function run(conf) {
-  // Thijs Brentjens: TODO: decide by default unofficial?
-  // conf.isUnofficial = conf.specStatus === "unofficial";
+  const l10n = getIntlData(conf.localizationStrings);
 
   conf.isUnofficial = true;
   if (!conf.logos || !conf.useLogo) {
