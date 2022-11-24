@@ -111,46 +111,7 @@ import sotdTmpl from "./templates/sotd.js";
 
 export const name = "logius/headers";
 
-const localizationStrings = {
-  en: {
-    wv: "Draft",
-    cv: "Recommendation",
-    vv: "Proposed recommendation",
-    def: "Definitive version",
-    basis: "Document",
-    eo: "Outdated version",
-    tg: "Rescinded version",
-    no: "Norm",
-    st: "Standard",
-    im: "Information model",
-    pr: "Guideline",
-    hr: "Guide",
-    wa: "Proposed recommendation",
-    al: "General",
-    bd: "Governance documentation",
-    bp: "Best practice",
-  },
-  nl: {
-    wv: "Werkversie",
-    cv: "Consultatieversie",
-    vv: "Versie ter vaststelling",
-    def: "Vastgestelde versie",
-    basis: "Document",
-    eo: "Verouderde versie",
-    tg: "Teruggetrokken versie",
-    no: "Norm",
-    st: "Standaard",
-    im: "Informatiemodel",
-    pr: "Praktijkrichtlijn",
-    hr: "Handreiking",
-    wa: "Werkafspraak",
-    al: "Algemeen",
-    bd: "Beheerdocumentatie",
-    bp: "Best practice",
-  },
-};
-
-export const l10n = getIntlData(localizationStrings);
+export const l10n = getIntlData(conf.localizationStrings);
 
 const NLRespecDate = new Intl.DateTimeFormat(["nl"], {
   timeZone: "UTC",
