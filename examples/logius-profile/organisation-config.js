@@ -16,7 +16,7 @@ const organisationConfig = {
   },
   // preProcess: [mdAddFigure],
 
-  localizationStrings = {
+  localizationStrings: {
     en: {
       wv: "Draft",
       cv: "Recommendation",
