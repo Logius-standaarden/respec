@@ -4,7 +4,7 @@ const documentConfig = {
   useLabel: true,
   license: "cc0",
   specType: "HR",
-  specStatus: "def",
+  specStatus: "WV",
   govTextCode: "AA",
 
   // subtitle: "Hier komt een subtitle",
