@@ -1,5 +1,5 @@
 import css from "../styles/label.css.js";
-import showWarning from "../core/utils.js";
+import { showWarning } from "../core/utils.js";
 
 export const name = "logius/label";
 
