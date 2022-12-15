@@ -237,7 +237,6 @@ export function run(conf) {
     // Thijs Brentjens: see
     conf.latestVersion = `${conf.nl_organisationPublishURL}${conf.pubDomain}/${conf.shortName}/`;
 
-
   // Thijs Brentjens: support previousMaturity as previousStatus
   if (conf.previousMaturity && !conf.previousStatus)
     conf.previousStatus = conf.previousMaturity;
