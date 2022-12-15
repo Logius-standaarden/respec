@@ -7,19 +7,6 @@ export default (conf, opts) => {
   return html`
     <h2>${l10n_sotdText.sotd}</h2>
     ${conf.isPreview ? renderPreview(conf) : ""}
-    ${conf.isDEF
-      ? l10n_sotdText.def
-      : conf.isVV
-      ? l10n_sotdText.vv
-      : conf.isCV
-      ? html`${l10n_sotdText.cv}<a href="${opts.emailCommentsMailto}"
-            >${opts.emailComments}</a
-          >.`
-      : conf.isWV
-      ? l10n_sotdText.wv
-      : conf.isBASIS
-      ? l10n_sotdText.basis
-      : ""}
     ${renderGovernance(conf)}
   `;
 };
