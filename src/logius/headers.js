@@ -135,6 +135,7 @@ export function run(conf) {
   const l10n = getIntlData(conf.localizationStrings);
 
   conf.isUnofficial = true;
+  conf.logos = [conf.nl_logo]
   if (!conf.logos || !conf.useLogo) {
     // conf.isUnofficial
     conf.logos = [];
