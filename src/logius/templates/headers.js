@@ -250,10 +250,10 @@ export default (conf, options) => {
         </p>`
       : ""}
     ${conf.alternateFormats
-      ? html`<p lang="en">
+      ? html`<p lang="nl">
           ${options.multipleAlternates
-            ? "This document is also available in these non-normative formats:"
-            : "This document is also available in this non-normative format:"}
+            ? "Dit document is ook beschikbaar in deze niet normatieve vormen:"
+            : "Dit document is ook beschikbaar in deze niet normatieve vorm:"}
           ${options.alternatesHTML}
         </p>`
       : ""}
@@ -289,8 +289,8 @@ function renderCopyright(conf) {
       ? html`<p class="copyright">${[conf.additionalCopyrightHolders]}</p>`
       : conf.overrideCopyright
       ? [conf.overrideCopyright]
-      : html`<p class="copyright" lang="en">
-          This document is licensed under a
+      : html`<p class="copyright" lang="nl">
+          Dit document valt onder de volgende licentie:
           ${linkLicense(
             conf.licenses[conf.license.toLowerCase()].name,
             conf.licenses[conf.license.toLowerCase()].url,
