@@ -3,7 +3,7 @@ const organisationConfig = {
   nl_organisationName: "Logius",
   nl_organisationStylesURL:
     "https://publicatie.centrumvoorstandaarden.nl/respec/style/",
-  nl_organisationPublishURL: "https://publicatie.centrumvoorstandaarden.nl/",
+  nl_organisationPublishURL: "https://publicatie.centrumvoorstandaarden.nl",
   nl_logo: {
     src: "https://publicatie.centrumvoorstandaarden.nl/respec/style/logos/figure-logius.svg",
     alt: "Logius",

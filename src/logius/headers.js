@@ -147,7 +147,7 @@ export function run(conf) {
   }
   conf.specType = conf.specType ? conf.specType.toUpperCase() : "";
 
-  conf.pubDomain = conf.pubDomain ? conf.pubDomain.toLowerCase() : "";
+  conf.pubDomain = conf.pubDomain ? `/${conf.pubDomain.toLowerCase()}` : undefined;
   conf.hasBeenPublished = !!conf.publishDate;
 
   conf.licenseInfo = conf.licenses[conf.license.toLowerCase()];
@@ -206,14 +206,11 @@ export function run(conf) {
   // Version URLs
   // Thijs Brentjens: changed this to Geonovum specific format. See https://github.com/Geonovum/respec/issues/126
   if (!conf.nl_organisationPublishURL) {
-    conf.nl_organisationPublishURL = "https://docs.geostandaarden.nl/";
-  } else {
-    if (!conf.nl_organisationPublishURL.endsWith("/"))
-      conf.nl_organisationPublishURL += "/";
+    conf.nl_organisationPublishURL = "no_publish_url_set";
   }
 
   // pieter added subdomain
-  const subdomain = conf.shortName ? `${conf.shortName}/` : ``;
+  const subdomain = conf.shortName ? `${conf.shortName}` : ``;
 
   const specStatus = conf.specStatus.includes("GN")
     ? conf.specStatus.substr(3).toLowerCase()
@@ -223,10 +220,19 @@ export function run(conf) {
   {
     if (!conf.publishVersion) {
       // eslint-disable-next-line prettier/prettier
-      conf.thisVersion = `${conf.nl_organisationPublishURL}${conf.pubDomain}/${subdomain}${specStatus}-${conf.specType.toLowerCase()}-${conf.shortName}-${concatDate(conf.publishDate)}/`;
+      conf.thisVersion = conf.nl_organisationPublishURL ? conf.nl_organisationPublishURL : '';
+      conf.thisVersion += conf.pubDomain ? `${conf.pubDomain}` : '';
+      conf.thisVersion += subdomain ? `/${subdomain}` : '';
+      conf.thisVersion += conf.specStatus ? `${conf.specStatus}` : '';
+      conf.thisVersion += conf.specType ? `-${conf.specType.toLowerCase()}` : '';
+      conf.thisVersion += conf.shortName ? `-${conf.shortName}` : '';
+      conf.thisVersion += conf.publishDate ? `-${concatDate(conf.publishDate)}` : '';
     } else {
       // Logius specific
-      conf.thisVersion = `${conf.nl_organisationPublishURL}${conf.pubDomain}/${subdomain}${conf.publishVersion}`;
+      conf.thisVersion = conf.nl_organisationPublishURL ? conf.nl_organisationPublishURL : '';
+      conf.thisVersion += conf.pubDomain ? `${conf.pubDomain}` : '';
+      conf.thisVersion += subdomain ? `/${subdomain}` : '';
+      conf.thisVersion += conf.publishVersion ? `${conf.publishVersion}` : '';
     }
   } else {
     conf.thisVersion = conf.edDraftURI;
@@ -235,7 +241,9 @@ export function run(conf) {
   // Only show latestVersion if a publishDate has been set. see issue https://github.com/Geonovum/respec/issues/93
   if (conf.hasBeenPublished)
     // Thijs Brentjens: see
-    conf.latestVersion = `${conf.nl_organisationPublishURL}${conf.pubDomain}/${conf.shortName}/`;
+    conf.latestVersion = conf.nl_organisationPublishURL ? conf.nl_organisationPublishURL : '';
+    conf.latestVersion += conf.pubDomain ? `${conf.pubDomain}` : '';
+    conf.latestVersion += conf.shortName ? `/${conf.shortName}` : '';
 
   // Thijs Brentjens: support previousMaturity as previousStatus
   if (conf.previousMaturity && !conf.previousStatus)
@@ -269,10 +277,19 @@ export function run(conf) {
     conf.prevVersion = `None${conf.previousPublishDate}`;
     if (!conf.previousPublishVersion) {
       // eslint-disable-next-line prettier/prettier
-      conf.prevVersion = `${conf.nl_organisationPublishURL}${conf.pubDomain}/${subdomain}${prevStatus}-${prevType}-${conf.shortName}-${concatDate(conf.previousPublishDate)}/`;
+      conf.prevVersion = conf.nl_organisationPublishURL ? conf.nl_organisationPublishURL : '';
+      conf.prevVersion += conf.pubDomain ? `${conf.pubDomain}` : '';
+      conf.prevVersion += subdomain ? `/${subdomain}` : '';
+      conf.prevVersion += prevStatus ? `${prevStatus}` : '';
+      conf.prevVersion += prevType ? `-${prevType}` : '';
+      conf.prevVersion += conf.shortName ? `-${conf.shortName}` : '';
+      conf.prevVersion += conf.publishDate ? `-${concatDate(conf.previousPublishDate)}` : '';
     } else {
       // eslint-disable-next-line prettier/prettier
-      conf.prevVersion = `${conf.nl_organisationPublishURL}${conf.pubDomain}/${subdomain}${conf.previousPublishVersion}/`;
+      conf.prevVersion = conf.nl_organisationPublishURL ? conf.nl_organisationPublishURL : '';
+      conf.prevVersion += conf.pubDomain ? `${conf.pubDomain}` : '';
+      conf.prevVersion += subdomain ? `/${subdomain}` : '';
+      conf.prevVersion += conf.previousPublishVersion ? `${conf.previousPublishVersion}` : '';
     }
   }
 
