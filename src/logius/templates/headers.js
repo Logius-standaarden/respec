@@ -136,6 +136,18 @@ const localizationStrings = {
 export const l10n = getIntlData(localizationStrings);
 
 export default (conf, options) => {
+  let customHeader = "";
+  if (conf.customHeaderEntries) {
+    for (const k in conf.customHeaderEntries) {
+      let customHeaderEntry = conf.customHeaderEntries[k];
+      if (conf[customHeaderEntry]) {
+        customHeaderEntry = conf[customHeaderEntry];
+      }
+      customHeader = html`${customHeader}
+        <dt>${k}:</dt>
+        <dd>${customHeaderEntry}</dd>`;
+    }
+  }
   return html`<div class="head">
     ${conf.logos.map(showLogo)} ${document.querySelector("h1#title")}
     ${getSpecSubTitleElem(conf)}
@@ -151,6 +163,7 @@ export default (conf, options) => {
         : ""}
     </h2>
     <dl>
+      ${customHeader}
       ${!conf.isNoTrack && conf.thisVersion
         ? html`
             <dt>${l10n.this_version}</dt>
