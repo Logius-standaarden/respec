@@ -52,6 +52,7 @@ const localizationStrings = {
     alt_formats:
       "This document is also available in these non-normative formats:",
     licensed: "This document is licensed under ",
+	none: "none",
   },
   ko: {
     author: "저자:",
@@ -110,6 +111,7 @@ const localizationStrings = {
     alt_formats:
       "Dit document is ook beschikbaar in deze niet-normatieve formaten:",
     licensed: "Dit document valt onder de volgende licentie: ",
+	none: "geen",
   },
   es: {
     author: "Autor:",
@@ -151,28 +153,24 @@ export default (conf, options) => {
         : ""}
     </h2>
     <dl>
-      ${!conf.isNoTrack && conf.thisVersion
-        ? html`
+      
             <dt>${l10n.this_version}</dt>
-            <dd class="status">
-              <a class="u-url status" href="${conf.thisVersion}"
-                >${conf.thisVersion}</a
-              >
-            </dd>
-          `
-        : ""}
-      ${!conf.isNoTrack && conf.latestVersion
+            <dd>
+			${!conf.isNoTrack && conf.thisVersion
         ? html`
+              <a href="${conf.thisVersion}"
+                >${conf.thisVersion}</a>
+			  `
+        : html`<i>${l10n.none}</i>`}
+            </dd>          
             <dt>${l10n.latest_published_version}</dt>
             <dd>
-              ${conf.latestVersion
+              ${!conf.isNoTrack && conf.latestVersion
                 ? html`<a href="${conf.latestVersion}"
                     >${conf.latestVersion}</a
                   >`
-                : "none"}
+                : html`<i>${l10n.none}</i>`}
             </dd>
-          `
-        : ""}
       ${conf.edDraftURI
         ? html`
             <dt>${l10n.latest_editors_draft}</dt>
@@ -201,12 +199,15 @@ export default (conf, options) => {
             <dd><a href="${conf.prevED}">${conf.prevED}</a></dd>
           `
         : ""}
-      ${conf.showPreviousVersion && conf.prevVersion
-        ? html`
-            <dt>${l10n.prev_version}</dt>
-            <dd><a href="${conf.prevVersion}">${conf.prevVersion}</a></dd>
+		<dt>${l10n.prev_version}</dt>
+
+<dd>      ${conf.showPreviousVersion && conf.prevVersion
+	  
+        ? html`            
+            <a href="${conf.prevVersion}">${conf.prevVersion}</a>
           `
-        : ""}
+        : html`<i>${l10n.none}</i>`}
+		</dd>
       ${!conf.prevRecURI
         ? ""
         : conf.isRec
