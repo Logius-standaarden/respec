@@ -7,11 +7,27 @@ import showPeople from "../../core/templates/show-people.js";
 
 const name = "logius/templates/headers";
 
-const ccLicense = "https://creativecommons.org/licenses/by/4.0/";
 const legalDisclaimer =
   "https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer";
 const w3cTrademark =
   "https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks";
+
+function getSpecSubTitleElem(conf) {
+  let specSubTitleElem = document.querySelector("h2#subtitle");
+
+  if (specSubTitleElem && specSubTitleElem.parentElement) {
+    specSubTitleElem.remove();
+    conf.subtitle = specSubTitleElem.textContent.trim();
+  } else if (conf.subtitle) {
+    specSubTitleElem = document.createElement("h2");
+    specSubTitleElem.textContent = conf.subtitle;
+    specSubTitleElem.id = "subtitle";
+  }
+  if (specSubTitleElem) {
+    specSubTitleElem.classList.add("subtitle");
+  }
+  return specSubTitleElem;
+}
 
 const localizationStrings = {
   en: {
@@ -31,6 +47,11 @@ const localizationStrings = {
     prev_version: "Previous version:",
     prev_recommendation: "Previous Recommendation:",
     latest_recommendation: "Latest Recommendation:",
+    alt_format:
+      "This document is also available in these non-normative format:",
+    alt_formats:
+      "This document is also available in these non-normative formats:",
+    licensed: "This document is licensed under ",
   },
   ko: {
     author: "저자:",
@@ -81,9 +102,14 @@ const localizationStrings = {
     latest_editors_draft: "Laatste werkversie:",
     latest_published_version: "Laatst gepubliceerde versie:",
     this_version: "Deze versie:",
-    prev_version: "Vorige versie",
+    prev_version: "Vorige versie:",
     former_editor: "Voormalig redacteur",
     former_editors: "Voormalige redacteurs",
+    alt_format:
+      "Dit document is ook beschikbaar in dit niet-normatieve formaat:",
+    alt_formats:
+      "Dit document is ook beschikbaar in deze niet-normatieve formaten:",
+    licensed: "Dit document valt onder de volgende licentie: ",
   },
   es: {
     author: "Autor:",
@@ -109,41 +135,23 @@ const localizationStrings = {
 
 export const l10n = getIntlData(localizationStrings);
 
-function getSpecSubTitleElem(conf) {
-  let specSubTitleElem = document.querySelector("h2#subtitle");
-
-  if (specSubTitleElem && specSubTitleElem.parentElement) {
-    specSubTitleElem.remove();
-    conf.subtitle = specSubTitleElem.textContent.trim();
-  } else if (conf.subtitle) {
-    specSubTitleElem = document.createElement("h2");
-    specSubTitleElem.textContent = conf.subtitle;
-    specSubTitleElem.id = "subtitle";
-  }
-  if (specSubTitleElem) {
-    specSubTitleElem.classList.add("subtitle");
-  }
-  return specSubTitleElem;
-}
-
 export default (conf, options) => {
   return html`<div class="head">
     ${conf.logos.map(showLogo)} ${document.querySelector("h1#title")}
     ${getSpecSubTitleElem(conf)}
     <h2>
-      ${conf.nl_organisationName
-        ? `${conf.nl_organisationName} `
-        : "Geonovum "}${conf.isRegular ? html` ${conf.typeStatus}<br /> ` : ""}
-      ${conf.textStatus}
+      ${conf.nl_organisationName ? `${conf.nl_organisationName} ` : ""}${html`
+        ${conf.typeText}<br />
+      `}
+      ${conf.statusText}
       <time class="dt-published" datetime="${conf.dashDate}"
         >${conf.publishHumanDate}</time
       >${conf.modificationDate
-        ? html`, ${l10n.edited_in_place}${" "}
-          ${inPlaceModificationDate(conf.modificationDate)}`
+        ? html`, ${l10n.edited_in_place}${" "} $conf.modificationDate`
         : ""}
     </h2>
     <dl>
-      ${!conf.isNoTrack
+      ${!conf.isNoTrack && conf.thisVersion
         ? html`
             <dt>${l10n.this_version}</dt>
             <dd class="status">
@@ -151,6 +159,10 @@ export default (conf, options) => {
                 >${conf.thisVersion}</a
               >
             </dd>
+          `
+        : ""}
+      ${!conf.isNoTrack && conf.latestVersion
+        ? html`
             <dt>${l10n.latest_published_version}</dt>
             <dd>
               ${conf.latestVersion
@@ -189,7 +201,7 @@ export default (conf, options) => {
             <dd><a href="${conf.prevED}">${conf.prevED}</a></dd>
           `
         : ""}
-      ${conf.showPreviousVersion
+      ${conf.showPreviousVersion && conf.prevVersion
         ? html`
             <dt>${l10n.prev_version}</dt>
             <dd><a href="${conf.prevVersion}">${conf.prevVersion}</a></dd>
@@ -252,10 +264,8 @@ export default (conf, options) => {
         </p>`
       : ""}
     ${conf.alternateFormats
-      ? html`<p lang="en">
-          ${options.multipleAlternates
-            ? "This document is also available in these non-normative formats:"
-            : "This document is also available in this non-normative format:"}
+      ? html`<p>
+          ${options.multipleAlternates ? l10n.alt_formats : l10n.alt_format}
           ${options.alternatesHTML}
         </p>`
       : ""}
@@ -269,8 +279,15 @@ export default (conf, options) => {
  * @param {string} url
  * @param {string=} cssClass
  */
-function linkLicense(text, url, cssClass) {
-  return html`<a rel="license" href="${url}" class="${cssClass}">${text}</a>`;
+function linkLicense(text, url, image, cssClass) {
+  let imageInsert = "";
+  if (image) {
+    imageInsert = html`<img class="license" src="${image}" alt="Logo ${text}" />
+      <br />`;
+  }
+  return html`<a rel="license" href="${url}" class="${cssClass}"
+    >${imageInsert} ${text}</a
+  >`;
 }
 
 function renderCopyright(conf) {
@@ -291,13 +308,14 @@ function renderCopyright(conf) {
       ? html`<p class="copyright">${[conf.additionalCopyrightHolders]}</p>`
       : conf.overrideCopyright
       ? [conf.overrideCopyright]
-      : html`<p class="copyright" lang="en">
-          This document is licensed under a
+      : html`<p class="copyright">
+          ${l10n.licensed}
           ${linkLicense(
-            "Creative Commons Attribution 4.0 License",
-            ccLicense,
+            conf.licenses[conf.license.toLowerCase()].name,
+            conf.licenses[conf.license.toLowerCase()].url,
+            conf.licenses[conf.license.toLowerCase()].image,
             "subfoot"
-          )}.
+          )}
         </p>`
     : conf.overrideCopyright
     ? [conf.overrideCopyright]

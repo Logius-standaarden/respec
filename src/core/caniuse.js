@@ -64,7 +64,7 @@ export function prepare(conf) {
  */
 function getLogoSrc(browser) {
   const path = BROWSERS.get(browser).path ?? browser;
-  return `https://cdn.w3.org/assets/logos/browser-logos/${path}/${path}.svg`;
+  return `https://www.w3.org/assets/logos/browser-logos/${path}/${path}.svg`;
 }
 
 export async function run(conf) {
@@ -111,7 +111,10 @@ function handleError(err, options, featureURL) {
  * @param {Object} conf   configuration settings
  */
 function normalizeCaniuseConf(conf) {
-  const DEFAULTS = { removeOnSave: true, browsers: [] };
+  const defaultBrowsers = new Set(BROWSERS.keys());
+  defaultBrowsers.delete("op_mob");
+  defaultBrowsers.delete("opera");
+  const DEFAULTS = { removeOnSave: true, browsers: [...defaultBrowsers] };
   if (typeof conf.caniuse === "string") {
     conf.caniuse = { feature: conf.caniuse, ...DEFAULTS };
     return;

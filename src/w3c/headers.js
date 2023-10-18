@@ -81,7 +81,7 @@
 //          intended to be pushed to the WHATWG.
 //      - "w3c-software", a permissive and attributions license (but GPL-compatible).
 //      - "w3c-software-doc", (default) the W3C Software and Document License
-//            https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document
+//            https://www.w3.org/Consortium/Legal/2023/software-license
 import {
   ISODate,
   codedJoinAnd,
@@ -114,6 +114,7 @@ const status2maturity = {
   LS: "WD",
   LD: "WD",
   FPWD: "WD",
+  "Member-SUBM": "SUBM",
 };
 
 export const status2text = {
@@ -230,7 +231,7 @@ export const licenses = new Map([
     {
       name: "W3C Software and Document Notice and License",
       short: "permissive document license",
-      url: "https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document",
+      url: "https://www.w3.org/Consortium/Legal/2023/software-license",
     },
   ],
   [
@@ -457,7 +458,7 @@ export async function run(conf) {
       const msg = docLink`Editor ${
         editor.name ? `"${editor.name}"` : `number ${i + 1}`
       } is missing their ${"[w3cid]"}.`;
-      const hint = docLink`See ${"[`w3cid`]"} for instructions for how to retrieve it and add it.`;
+      const hint = docLink`See ${"[w3cid]"} for instructions for how to retrieve it and add it.`;
       showError(msg, name, { hint });
     });
   }
@@ -467,7 +468,7 @@ export async function run(conf) {
     showError(msg, name);
   }
   if (conf.copyrightStart == conf.publishYear) conf.copyrightStart = "";
-  if (conf.isRec && !conf.errata) {
+  if (conf.isRec && !conf.errata && !conf.revisionTypes?.length) {
     const msg = "Recommendations must have an errata link.";
     const hint = docLink`Add an ${"[errata]"} URL to your ${"[respecConfig]"}.`;
     showError(msg, name, { hint });
@@ -547,10 +548,6 @@ export async function run(conf) {
   }
   if (Array.isArray(conf.wg)) {
     conf.multipleWGs = conf.wg.length > 1;
-    conf.wgHTML = htmlJoinAnd(conf.wg, (wg, idx) => {
-      return html`the <a href="${conf.wgURI[idx]}">${wg}</a>`;
-    });
-
     conf.wgPatentHTML = htmlJoinAnd(conf.wg, (wg, i) => {
       return html`a
         <a href="${conf.wgPatentURI[i]}" rel="disclosure"
@@ -559,9 +556,6 @@ export async function run(conf) {
     });
   } else {
     conf.multipleWGs = false;
-    if (conf.wg) {
-      conf.wgHTML = html`the <a href="${conf.wgURI}">${conf.wg}</a>`;
-    }
   }
   if (conf.isPR && !conf.crEnd) {
     const msg = docLink`${"[specStatus]"} is "PR" but no ${"[crEnd]"} is specified in the ${"[respecConfig]"} (needed to indicate end of previous CR).`;
@@ -596,7 +590,12 @@ export async function run(conf) {
   }
 
   conf.updateableRec = sotd.classList.contains("updateable-rec");
-  const revisionTypes = ["addition", "correction"];
+  const revisionTypes = [
+    "addition",
+    "correction",
+    "proposed-addition",
+    "proposed-correction",
+  ];
   if (conf.isRec && conf.revisionTypes?.length > 0) {
     if (conf.revisionTypes.some(x => !revisionTypes.includes(x))) {
       const unknownRevisionTypes = conf.revisionTypes.filter(
@@ -610,8 +609,12 @@ export async function run(conf) {
       )}.`;
       showError(msg, name, { hint });
     }
-    if (conf.revisionTypes.includes("addition") && !conf.updateableRec) {
-      const msg = docLink`${"[specStatus]"} is "REC" with proposed additions but the Recommendation is not marked as a allowing new features.`;
+    if (
+      (conf.revisionTypes.includes("proposed-addition") ||
+        conf.revisionTypes.includes("addition")) &&
+      !conf.updateableRec
+    ) {
+      const msg = docLink`${"[specStatus]"} is "REC" with proposed additions but the Recommendation is not marked as allowing new features.`;
       showError(msg, name);
     }
   }
@@ -621,6 +624,9 @@ export async function run(conf) {
     conf.updateableRec &&
     conf.revisionTypes &&
     conf.revisionTypes.length > 0 &&
+    ["proposed-addition", "proposed-correction"].some(type =>
+      conf.revisionTypes.includes(type)
+    ) &&
     !conf.revisedRecEnd
   ) {
     const msg = docLink`${"[specStatus]"} is "REC" with proposed corrections or additions but no ${"[revisedRecEnd]"} is specified in the ${"[respecConfig]"}.`;
@@ -740,7 +746,7 @@ async function deriveHistoryURI(conf) {
   }
 
   const historyURL = new URL(
-    conf.historyURI ?? conf.shortName,
+    conf.historyURI ?? `${conf.shortName}/`,
     "https://www.w3.org/standards/history/"
   );
 

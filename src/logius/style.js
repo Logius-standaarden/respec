@@ -11,6 +11,7 @@ import {
   showWarning,
   toKeyValuePairs,
 } from "../core/utils.js";
+import css from "../styles/license.css.js";
 import { html } from "../core/import-maps.js";
 import { sub } from "../core/pubsubhub.js";
 export const name = "logius/style";
@@ -54,7 +55,7 @@ function getBaseStyleURI() {
     ? respecConfig.nl_organisationStylesURL
     : "https://www.w3.org/StyleSheets/TR/2016/";
   if (!baseStyle.endsWith("/")) baseStyle += "/";
-  return `${baseStyle}/base.css`;
+  return `${baseStyle}base.css`;
 }
 
 function createBaseStyle() {
@@ -107,13 +108,21 @@ if (!document.head.querySelector("meta[name=viewport]")) {
   elements.prepend(createMetaViewport());
 }
 
-document.head.prepend(elements);
-
 function styleMover(linkURL) {
   return exportDoc => {
     const w3cStyle = exportDoc.querySelector(`head link[href="${linkURL}"]`);
     exportDoc.querySelector("head").append(w3cStyle);
   };
+}
+
+document.head.prepend(elements);
+
+function insertStyle() {
+  const styleElement = document.createElement("style");
+  styleElement.id = "respec-nlgov";
+  styleElement.textContent = css;
+  document.head.appendChild(styleElement);
+  return styleElement;
 }
 
 export function run(conf) {
@@ -122,102 +131,16 @@ export function run(conf) {
     conf.specStatus = "base";
     showWarning(msg, name);
   }
-  if (!conf.nl_organisationStylesURL) {
-    // defaulting to Geonovum
-    conf.nl_organisationStylesURL =
-      "https://tools.geostandaarden.nl/respec/style/";
-    // override nl_organisationPrefix
-    conf.nl_organisationPrefix = "GN-";
-    let msg = `respecConfig.nl_organisationStylesURL missing. Defaulting to '${conf.nl_organisationStylesURL}'.`;
-    showWarning(msg, name);
-    msg = `respecConfig.nl_organisationPrefix missing. Defaulting to 'GN-.'`;
-    showWarning(msg, name);
-  }
-  if (!conf.nl_organisationPrefix) {
-    // default to geonovum
-    conf.nl_organisationPrefix = "GN-";
-    const msg = `respecConfig.nl_organisationPrefix missing. Defaulting to 'GN-.'`;
-    showWarning(msg, name);
-  }
-
-  let styleFile = conf.nl_organisationPrefix;
-
-  // Figure out which style file to use.
-  switch (conf.specStatus.toUpperCase()) {
-    // Geonovum statuses for backward compatibility
-    // todo W3c seem to have a status with a dedicated css (XX_Draft),  do we need this too?
-    // case "DRAFT":
-    // case "GN-DRAFT":
-    //   styleFile = conf.specStatus.toLowerCase();
-    //   break;
-    case "WV": // Werkversie
-    case "GN-WV":
-      styleFile += "WV.css";
-      break;
-    case "CV": // (Openbare) Consultatieversie
-    case "GN-CV":
-      styleFile += "CV.css";
-      break;
-    case "VV": // Vastgestelde versie
-    case "GN-VV":
-      styleFile += "VV.css";
-      break;
-    case "DEF": // Definitieve versie
-    case "GN-DEF": // todo Check geonovum impact
-      if (conf.specType == "ST") {
-        styleFile += "DEF.css";
-      } else {
-        styleFile += "VG.css";
-      }
-      break;
-    case "EO": // Verouderde versie/Einde ondersteuning/Vervangen door nieuwere versie
-    case "GN-EO":
-      styleFile += "EO.css";
-      break;
-    case "TG": // Versie teruggetrokken
-    case "TG-EO":
-      styleFile += "TG.css";
-      break;
-    case "BASIS": // 'geen status'
-    case "GN-BASIS":
-      styleFile += "BASIS.css";
-      break;
-    default:
-      styleFile += "BASIS.css";
-  }
-
-  // todo we don't have an experimental style yet, do we need this?
-  // Select between released styles and experimental style.
-  // const version = selectStyleVersion(conf.useExperimentalStyles || "2016");
-  // // Attach W3C fixup script after we are done.
-  // if (version && !conf.noToc) {
-  //   sub(
-  //     "end-all",
-  //     () => {
-  //       attachFixupScript(document, version);
-  //     },
-  //     { once: true }
-  //   );
-  // }
-  // const finalVersionPath = version ? `${version}/` : "";
-  const finalVersionPath = "";
-
-  if (!conf.nl_organisationStylesURL) {
-    // defaulting to Geonovum
-    conf.nl_organisationStylesURL =
-      "https://tools.geostandaarden.nl/respec/style/";
-    const msg = `respecConfig.nl_organisationStylesURL missing. Defaulting to '${conf.nl_organisationStylesURL}'.`;
-    showWarning(msg, name);
-  }
 
   if (!conf.noToc) {
     sub("end-all", attachFixupScript, { once: true });
   }
 
-  const finalStyleURL = `${conf.nl_organisationStylesURL}${finalVersionPath}${styleFile}`;
-  // (`using ${finalStyleURL}`);
+  const finalStyleURL = getBaseStyleURI();
   linkCSS(document, finalStyleURL);
-  // Make sure the W3C stylesheet is the last stylesheet, as required by W3C Pub Rules.
   const moveStyle = styleMover(finalStyleURL);
   sub("beforesave", moveStyle);
+
+  // code hierboven mogenlijk overbodig?
+  insertStyle();
 }
