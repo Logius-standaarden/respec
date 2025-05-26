@@ -165,7 +165,7 @@ export function run(conf) {
   }
 
   if (!conf.subtitle) conf.subtitle = "";
-  conf.isNoTrack = !conf.publishDate;
+  conf.isNoTrack = !conf.publishDate || !conf.publishVersion || conf.specStatus?.toUpperCase() == "WV";
   conf.publishDate = validateDateAndRecover(
     conf,
     "publishDate",
@@ -241,7 +241,6 @@ export function run(conf) {
   }
   conf.typeText = getIntlData(conf.specTypeText)[conf.specType.toLowerCase()];
 
-  conf.showThisVersion = !conf.isNoTrack; // || conf.isTagFinding;
   conf.showPreviousVersion = !conf.isNoTrack && !conf.isSubmission;
   if (!conf.prevVersion) conf.showPreviousVersion = false;
 
