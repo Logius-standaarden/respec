@@ -165,10 +165,7 @@ export function run(conf) {
   }
 
   if (!conf.subtitle) conf.subtitle = "";
-  conf.isNoTrack =
-    !conf.publishDate ||
-    !conf.publishVersion ||
-    conf.specStatus?.toUpperCase() == "WV";
+  conf.isNoTrack = !conf.publishDate || !conf.publishVersion;
   conf.publishDate = validateDateAndRecover(
     conf,
     "publishDate",
