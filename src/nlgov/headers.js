@@ -283,7 +283,7 @@ export function run(conf) {
       return;
     }
     input.forEach(i => {
-      if (!conf[i]) {
+      if (!(i in conf)) {
         if (i.length > 3 && !i.startsWith("http")) {
           console.warn(
             `URI config option expected ${i} to be in config. Removing version link from document header.`
