@@ -422,4 +422,3 @@ function populateSoTD(conf) {
   const template = sotdTmpl;
   return template(conf);
 }
-
