@@ -134,6 +134,7 @@ export function run(conf) {
   }
   conf.specType = conf.specType ? conf.specType.toUpperCase() : "";
 
+  conf.pubDomain = conf.pubDomain ? conf.pubDomain.toLowerCase() : "";
   conf.hasBeenPublished = !!conf.publishDate;
 
   conf.licenseInfo = conf.licenses[conf.license.toLowerCase()];
