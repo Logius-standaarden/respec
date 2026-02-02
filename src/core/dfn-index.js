@@ -73,12 +73,6 @@ const localizationStrings = {
     dfnOf: "的定义",
     definesFollowing: "定义以下内容:",
   },
-  nl: {
-    heading: "Index",
-    headingExternal: "Begrippen gedefinieerd door verwijzing",
-    headlingLocal: "Begrippen gedefinieerd door deze specificatie",
-    dfnOf: "definitie van",
-  },
 };
 const l10n = getIntlData(localizationStrings);
 
