@@ -49,8 +49,8 @@ const localizationStrings = {
   nl: {
     conformance: "Conformiteit",
     normativity:
-      "Naast onderdelen die als niet normatief gemarkeerd zijn, " +
-      "zijn ook alle diagrammen, voorbeelden, en noten in dit document niet normatief. " +
+      "Naast onderdelen die als niet-normatief gemarkeerd zijn, " +
+      "zijn ook alle diagrammen, voorbeelden, en noten in dit document niet-normatief. " +
       "Verder is alles in dit document normatief.",
     keywordInterpretation(keywords, plural) {
       return html`<p>
