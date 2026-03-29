@@ -304,7 +304,7 @@ export function run(conf) {
     if (unresolved) {
       return;
     }
-    return url.toLowerCase();
+    return conf.keepCase ? url : url.toLowerCase();
   }
 
   if (!conf.thisVersion) {
