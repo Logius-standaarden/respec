@@ -1,4 +1,3 @@
-// @ts-check
 import { getIntlData, showWarning } from "../../core/utils.js";
 import { html } from "../../core/import-maps.js";
 import showLink from "../../core/templates/show-link.js";

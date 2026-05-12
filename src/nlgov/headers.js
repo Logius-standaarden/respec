@@ -1,4 +1,3 @@
-// @ts-check
 // Module logius/headers
 // Generate the headers material based on the provided configuration.
 // CONFIGURATION

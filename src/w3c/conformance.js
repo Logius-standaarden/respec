@@ -60,8 +60,9 @@ const localizationStrings = {
         <a href="https://www.rfc-editor.org/info/bcp14">BCP 14</a>
         ${renderInlineCitation("RFC2119")} ${renderInlineCitation("RFC8174")}
         als, en alleen als deze in hoofdletters zijn weergegeven, zoals hier
-        getoond.`;
-    }
+        getoond.
+      </p>`;
+    },
   },
   fr: {
     conformance: "Conformité",

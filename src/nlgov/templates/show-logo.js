@@ -1,4 +1,3 @@
-// @ts-check
 import { docLink, showError } from "../../core/utils.js";
 import { html } from "../../core/import-maps.js";
 

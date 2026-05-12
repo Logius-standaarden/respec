@@ -1,4 +1,3 @@
-// @ts-check
 /* jshint strict: true, browser:true, jquery: true */
 // Module logius/style
 // Inserts a link to the appropriate NL-RESPEC style for the specification's maturity level.
