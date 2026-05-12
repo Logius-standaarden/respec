@@ -1,4 +1,3 @@
-// @ts-check
 import { getIntlData } from "../../core/utils.js";
 import { html } from "../../core/import-maps.js";
 

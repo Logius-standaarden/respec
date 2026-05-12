@@ -1,4 +1,3 @@
-// @ts-check
 /*
  * Logius addition
  * this script splits markdown level 1 headers ("#") in seperate sections

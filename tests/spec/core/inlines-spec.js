@@ -538,6 +538,30 @@ describe("Core - Inlines", () => {
     );
   });
 
+  it("strips possessive suffix from [= term's =] for link resolution", async () => {
+    const body = `
+      <section id="test">
+        <dfn>current settings object</dfn>
+        <p id="links">
+          [= current settings object's =]
+          [= current settings object\u2019s =]
+        </p>
+      </section>
+    `;
+    const doc = await makeRSDoc(makeStandardOps({}, body));
+    const anchors = doc.querySelectorAll("#links a");
+    expect(anchors).toHaveSize(2);
+    const dfnId = doc.querySelector("#test dfn").id;
+    for (const a of anchors) {
+      expect(a.getAttribute("href"))
+        .withContext(a.textContent)
+        .toBe(`#${dfnId}`);
+    }
+    // Display text retains possessive form
+    expect(anchors[0].textContent).toBe("current settings object's");
+    expect(anchors[1].textContent).toBe("current settings object\u2019s");
+  });
+
   it("processes {{ forContext/term }} IDL", async () => {
     const body = `
       <section>
@@ -656,5 +680,21 @@ describe("Core - Inlines", () => {
     expect(eventListen.textContent).toBe("addEventListener(type, callback)");
     expect(event.textContent).toBe("event");
     expect(noRef.textContent).toBe(`"no-referrer"`);
+  });
+
+  it("renders escaped {{ \\IDL }} references as plain text without a link", async () => {
+    const body = `
+      <section>
+        <p id="no-space">{{\\Window}}</p>
+        <p id="with-space">{{ \\Window }}</p>
+      </section>
+    `;
+    const doc = await makeRSDoc(makeStandardOps(null, body));
+    const noSpace = doc.getElementById("no-space");
+    expect(noSpace.querySelector("a")).toBeNull();
+    expect(noSpace.textContent.trim()).toBe("{{Window}}");
+    const withSpace = doc.getElementById("with-space");
+    expect(withSpace.querySelector("a")).toBeNull();
+    expect(withSpace.textContent.trim()).toBe("{{ Window }}");
   });
 });

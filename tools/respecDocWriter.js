@@ -1,12 +1,9 @@
 /**
  * Exports toHTML() method, allowing programmatic control of the spec generator.
  */
-import { fileURLToPath } from "url";
 import path from "path";
 import puppeteer from "puppeteer";
 import { readFile } from "fs/promises";
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const noop = () => {};
 
@@ -142,7 +139,12 @@ async function useLocalReSpec(page, log) {
     const url = new URL(request.url());
     const respecProfileRegex = /\/(respec-[\w-]+)(?:\.js)?$/;
     const profile = url.pathname.match(respecProfileRegex)[1];
-    const localPath = path.join(__dirname, "..", "builds", `${profile}.js`);
+    const localPath = path.join(
+      import.meta.dirname,
+      "..",
+      "builds",
+      `${profile}.js`
+    );
     const relPath = path.relative(process.cwd(), localPath);
     log(`Intercepted ${url} to respond with ${relPath}`);
     await request.respond({
@@ -223,7 +225,7 @@ async function checkIfReSpec(page) {
  */
 async function generateHTML(page, timer, version, url) {
   try {
-    return await page.evaluate(evaluateHTML, version, timer);
+    return await page.evaluate(evaluateHTML, timer);
   } catch (err) {
     const msg = `\n😭  Sorry, there was an error generating the HTML. Please report this issue!\n${`${
       `Specification: ${url}\n` +
@@ -235,48 +237,29 @@ async function generateHTML(page, timer, version, url) {
 }
 
 /**
- * @param {ReSpecVersion} version
  * @param {ReturnType<typeof createTimer>} timer
  */
-async function evaluateHTML(version, timer) {
+async function evaluateHTML(timer) {
   await timeout(
     document.respec ? document.respec.ready : document.respecIsReady,
     timer.remaining
   );
 
-  const [major, minor] = version;
-  if (major < 20 || (major === 20 && minor < 10)) {
-    console.warn(
-      "👴🏽  Ye Olde ReSpec version detected! Please update to 20.10.0 or above. " +
-        `Your version: ${window.respecVersion}.`
+  if (!document.respec?.toHTML) {
+    throw new Error(
+      "document.respec.toHTML is not available. " +
+        "Please upgrade to a newer version of ReSpec, " +
+        "or use an older version of the ReSpec CLI."
     );
-    // Document references an older version of ReSpec that does not yet
-    // have the "core/exporter" module. Try with the old "ui/save-html"
-    // module.
-    const { exportDocument } = await new Promise((resolve, reject) => {
-      require(["ui/save-html"], resolve, err => {
-        reject(new Error(err.message));
-      });
-    });
-    return exportDocument("html", "text/html");
-  } else if (!document.respec || !document.respec.toHTML) {
-    const { rsDocToDataURL } = await new Promise((resolve, reject) => {
-      require(["core/exporter"], resolve, err => {
-        reject(new Error(err.message));
-      });
-    });
-    const dataURL = rsDocToDataURL("text/html");
-    const encodedString = dataURL.replace(/^data:\w+\/\w+;charset=utf-8,/, "");
-    return decodeURIComponent(encodedString);
-  } else {
-    return await document.respec.toHTML();
   }
+
+  return await document.respec.toHTML();
 
   function timeout(promise, ms) {
     return new Promise((resolve, reject) => {
       promise.then(resolve, reject);
       const msg = `Timeout: document.respec.ready didn't resolve in ${ms}ms.`;
-      setTimeout(() => reject(msg), ms);
+      setTimeout(() => reject(new Error(msg)), ms);
     });
   }
 }
