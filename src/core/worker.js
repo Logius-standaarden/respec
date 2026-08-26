@@ -11,9 +11,8 @@ export const name = "core/worker";
 import { createResourceHint } from "./utils.js";
 import { fetchBase } from "./text-loader.js";
 
-// Derive the highlight URL from the ReSpec bundle location. In the IIFE bundle,
-// import.meta.url resolves to the script element's src (captured at load time).
-const highlightHref = new URL("respec-highlight.js", import.meta.url).href;
+const highlightHref =
+  "https://logius-standaarden.github.io/publicatie/respec/builds/respec-highlight.js";
 
 // Canonical production URL used as the importScripts() fallback. This differs
 // from highlightHref because in source-module mode (dev server, headless tests)
